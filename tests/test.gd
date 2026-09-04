@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-## Script điều khiển Box nhảy trên nền tảng
+## Script điều khiển Box nhảy trên nền tảng (Test Prototype)
 
 const JUMP_VELOCITY: float = -600.0
 const GRAVITY: float = 1200.0

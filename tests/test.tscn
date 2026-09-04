@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://biqs4j4a7ov2u"]
 
-[ext_resource type="Script" path="res://scripts/entities/jumping_box.gd" id="1_jumping_box"]
+[ext_resource type="Script" uid="uid://dv3scl35cc0fi" path="res://tests/test.gd" id="1_test_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
 size = Vector2(700, 50)
@@ -8,16 +8,16 @@ size = Vector2(700, 50)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_box"]
 size = Vector2(70, 70)
 
-[node name="JumpingBoxDemo" type="Node2D"]
+[node name="Test" type="Node2D" unique_id=170723564]
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=648783930]
 offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0.101961, 0.12549, 0.172549, 1)
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1124103087]
 
-[node name="Title" type="Label" parent="UI"]
+[node name="Title" type="Label" parent="UI" unique_id=793011942]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -27,10 +27,10 @@ offset_right = 300.0
 offset_bottom = 80.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 26
-text = "DEMO: BOX ĐANG NHẢY TRÊN NỀN TẢNG"
+text = "TEST: BOX ĐANG NHẢY TRÊN NỀN TẢNG"
 horizontal_alignment = 1
 
-[node name="Hint" type="Label" parent="UI"]
+[node name="Hint" type="Label" parent="UI" unique_id=1131640643]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -43,13 +43,20 @@ theme_override_colors/font_color = Color(0.65098, 0.709804, 0.8, 1)
 text = "Box tự động nhún nhảy khi chạm nền | Bấm SPACE hoặc Chuột để nhảy thêm"
 horizontal_alignment = 1
 
-[node name="Platform" type="StaticBody2D" parent="."]
+[node name="Label" type="Label" parent="UI" unique_id=515225448]
+offset_left = 257.0
+offset_top = 152.0
+offset_right = 397.0
+offset_bottom = 175.0
+text = "xin chào bạn nhé"
+
+[node name="Platform" type="StaticBody2D" parent="." unique_id=283728336]
 position = Vector2(576, 500)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1039069925]
 shape = SubResource("RectangleShape2D_platform")
 
-[node name="ColorRect" type="ColorRect" parent="Platform"]
+[node name="ColorRect" type="ColorRect" parent="Platform" unique_id=1928156781]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -63,7 +70,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.231373, 0.301961, 0.419608, 1)
 
-[node name="PlatformLabel" type="Label" parent="Platform"]
+[node name="PlatformLabel" type="Label" parent="Platform" unique_id=505543115]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -78,14 +85,14 @@ grow_vertical = 2
 text = "[ BOX NỀN TẢNG DÀI ]"
 horizontal_alignment = 1
 
-[node name="JumpingBox" type="CharacterBody2D" parent="."]
+[node name="JumpingBox" type="CharacterBody2D" parent="." unique_id=153517068]
 position = Vector2(576, 400)
-script = ExtResource("1_jumping_box")
+script = ExtResource("1_test_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpingBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpingBox" unique_id=343387698]
 shape = SubResource("RectangleShape2D_box")
 
-[node name="ColorRect" type="ColorRect" parent="JumpingBox"]
+[node name="ColorRect" type="ColorRect" parent="JumpingBox" unique_id=489342692]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -99,18 +106,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.968627, 0.478431, 0.239216, 1)
 
-[node name="Face" type="Label" parent="JumpingBox"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -25.0
-offset_top = -13.0
-offset_right = 25.0
-offset_bottom = 13.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Face" type="Label" parent="JumpingBox" unique_id=220158796]
+offset_left = -35.0
+offset_top = -11.0
+offset_right = 35.0
+offset_bottom = 14.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "^ _ ^"
 horizontal_alignment = 1
