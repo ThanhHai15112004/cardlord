@@ -1,0 +1,28 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot-specific exports
+*.translation
+*.pck
+*.apk
+*.aab
+*.exe
+*.zip
+
+# Mono / .NET
+.mono/
+data_*/
+mono_crash.*.json
+
+# Windows / OS specific
+*Zone.Identifier*
+[Tt]humbs.db
+[Dd]esktop.ini
+.DS_Store
+
+# IDE / Editor
+.vs/
+.vscode/
+*.swp
+*~
