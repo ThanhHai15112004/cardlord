@@ -1,0 +1,277 @@
+[gd_scene format=3 uid="uid://df7x5ka3pn8l0"]
+
+[ext_resource type="Script" uid="uid://uatrjug6mve2" path="res://tests/test_forest_isometric.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://bkg507ob36h3k" path="res://assets/models/forest/rocks/Rock_2_A_Color1.gltf" id="2_o1fij"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.35, 0.55, 0.85, 1)
+sky_horizon_color = Color(0.7, 0.8, 0.9, 1)
+ground_bottom_color = Color(0.2, 0.25, 0.3, 1)
+ground_horizon_color = Color(0.7, 0.8, 0.9, 1)
+
+[sub_resource type="Sky" id="Sky_env"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_env")
+ambient_light_source = 3
+ambient_light_color = Color(0.8, 0.85, 0.9, 1)
+ambient_light_energy = 0.5
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_dirt_base"]
+size = Vector3(14.4, 0.6, 14.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dirt"]
+albedo_color = Color(0.290196, 0.211765, 0.160784, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(14, 0.4, 14)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass"]
+albedo_color = Color(0.21814707, 0.60306805, 0.49495924, 1)
+roughness = 0.8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_bg"]
+bg_color = Color(0.0980392, 0.0862745, 0.109804, 0.92)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wood_banner"]
+bg_color = Color(0.552941, 0.333333, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.360784, 0.2, 0.0901961, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_desc_box"]
+bg_color = Color(0.168627, 0.0823529, 0.12549, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.431373, 0.270588, 0.345098, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="TestForestIsometric" type="Node3D" unique_id=858543065]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1749667240]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=700620129]
+transform = Transform3D(0.81915224, -0.4055796, 0.40557963, 0, 0.7071068, 0.70710677, -0.57357615, -0.5792281, 0.57922816, 0, 14.578666, 0)
+light_color = Color(0.98761743, 0.9614782, 0.95850176, 1)
+light_energy = 1.3
+shadow_enabled = true
+shadow_bias = 0.03
+
+[node name="NightTorchLight" type="OmniLight3D" parent="." unique_id=2101937555]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+visible = false
+light_color = Color(1, 0.635294, 0.219608, 1)
+light_energy = 3.5
+omni_range = 10.0
+omni_attenuation = 1.5
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1678888071]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=1432153550]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+projection = 1
+size = 12.0
+
+[node name="GroundPlatform" type="Node3D" parent="." unique_id=1652675082]
+
+[node name="DirtBase" type="MeshInstance3D" parent="GroundPlatform" unique_id=546467324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+mesh = SubResource("BoxMesh_dirt_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_dirt")
+
+[node name="GrassSurface" type="MeshInstance3D" parent="GroundPlatform" unique_id=1338752749]
+mesh = SubResource("BoxMesh_ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_grass")
+
+[node name="Rock_2_A_Color12" parent="GroundPlatform" unique_id=1028963431 instance=ExtResource("2_o1fij")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -2.5730467, 0.20016468, -0.4676292)
+
+[node name="ForestObjects" type="Node3D" parent="." unique_id=844266079]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1216489427]
+
+[node name="Panel" type="PanelContainer" parent="UI" unique_id=1544175505]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -460.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 190.0
+grow_horizontal = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/Panel" unique_id=1319340465]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="UI/Panel/VBox" unique_id=22521126]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85098, 0.3, 1)
+theme_override_font_sizes/font_size = 17
+text = "KAYKIT 3D FOREST - ISOMETRIC DIORAMA"
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="UI/Panel/VBox" unique_id=382173663]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.835294, 0.309804, 1)
+text = "THỜI GIAN: BAN NGÀY (XÂY DỰNG & QUY HOẠCH)"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/Panel/VBox" unique_id=2077850728]
+layout_mode = 2
+
+[node name="Help1" type="Label" parent="UI/Panel/VBox" unique_id=1237281236]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• [A / D] hoặc [Mũi tên]: Xoay góc nhìn sa bàn 360°"
+
+[node name="Help2" type="Label" parent="UI/Panel/VBox" unique_id=220187432]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• [Cuộn chuột]: Phóng to / Thu nhỏ camera"
+
+[node name="Help3" type="Label" parent="UI/Panel/VBox" unique_id=824621751]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "• [SPACE]: Chuyển đổi Ngày / Đêm (Xem hiệu ứng ánh sáng)"
+
+[node name="InfoLabel" type="Label" parent="UI/Panel/VBox" unique_id=286463694]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Chế độ Camera: Orthogonal (Isometric Sa bàn chuẩn)"
+
+[node name="DemoCard" type="Control" parent="UI" unique_id=611470339]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -320.0
+offset_right = 230.0
+offset_bottom = -40.0
+grow_vertical = 0
+
+[node name="CardFrame" type="PanelContainer" parent="UI/DemoCard" unique_id=1181720619]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_bg")
+
+[node name="Margin" type="MarginContainer" parent="UI/DemoCard/CardFrame" unique_id=1624333481]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="UI/DemoCard/CardFrame/Margin" unique_id=1482562124]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CostHeader" type="HBoxContainer" parent="UI/DemoCard/CardFrame/Margin/VBox" unique_id=1211779461]
+layout_mode = 2
+
+[node name="CostBadge" type="Label" parent="UI/DemoCard/CardFrame/Margin/VBox/CostHeader" unique_id=662199974]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "[ 3 ]"
+
+[node name="Spacer" type="Control" parent="UI/DemoCard/CardFrame/Margin/VBox/CostHeader" unique_id=439197871]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TypeLabel" type="Label" parent="UI/DemoCard/CardFrame/Margin/VBox/CostHeader" unique_id=96123556]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "RESOURCE"
+
+[node name="ArtPlaceholder" type="ColorRect" parent="UI/DemoCard/CardFrame/Margin/VBox" unique_id=176726029]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+color = Color(0.2, 0.35, 0.18, 1)
+
+[node name="ArtLabel" type="Label" parent="UI/DemoCard/CardFrame/Margin/VBox/ArtPlaceholder" unique_id=1024790228]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -12.0
+offset_right = 50.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "🌲 RỪNG TỰ NHIÊN"
+horizontal_alignment = 1
+
+[node name="TitleBanner" type="PanelContainer" parent="UI/DemoCard/CardFrame/Margin/VBox" unique_id=430669794]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wood_banner")
+
+[node name="TitleText" type="Label" parent="UI/DemoCard/CardFrame/Margin/VBox/TitleBanner" unique_id=587122580]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "FOREST GROVE"
+horizontal_alignment = 1
+
+[node name="DescBox" type="PanelContainer" parent="UI/DemoCard/CardFrame/Margin/VBox" unique_id=1839693839]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_desc_box")
+
+[node name="DescMargin" type="MarginContainer" parent="UI/DemoCard/CardFrame/Margin/VBox/DescBox" unique_id=949030586]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="DescText" type="Label" parent="UI/DemoCard/CardFrame/Margin/VBox/DescBox/DescMargin" unique_id=58721836]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 11
+text = "Khai thác +2 Gỗ mỗi lượt. Đặt kề bên Trại tiều phu để tăng sản lượng."
+horizontal_alignment = 1
+autowrap_mode = 3
