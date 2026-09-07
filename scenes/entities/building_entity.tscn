@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c8m2v5k9x3p4a"]
+
+[ext_resource type="Script" uid="uid://d1k4n8m6p3q2w" path="res://scripts/entities/building_entity.gd" id="1_building_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_collider"]
+size = Vector3(1.8, 2, 1.8)
+
+[node name="BuildingEntity" type="Node3D"]
+script = ExtResource("1_building_script")
+
+[node name="ModelContainer" type="Node3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_collider")

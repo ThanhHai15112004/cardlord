@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://b5m7v3k8x1p2q"]
+
+[ext_resource type="Script" uid="uid://bfsr8c53fro50" path="res://scenes/gameplay/gameplay.gd" id="1_gameplay_script"]
+[ext_resource type="Script" uid="uid://dc46r1fddftdf" path="res://scripts/systems/grid_system.gd" id="2_grid_script"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.35, 0.55, 0.85, 1)
+sky_horizon_color = Color(0.7, 0.8, 0.9, 1)
+ground_bottom_color = Color(0.2, 0.25, 0.3, 1)
+ground_horizon_color = Color(0.7, 0.8, 0.9, 1)
+
+[sub_resource type="Sky" id="Sky_env"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_env")
+ambient_light_source = 3
+ambient_light_color = Color(0.85, 0.88, 0.95, 1)
+ambient_light_energy = 0.55
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
+bg_color = Color(0.12, 0.1, 0.15, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.4, 0.3, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_panel"]
+bg_color = Color(0.1, 0.09, 0.12, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.35, 0.45, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Gameplay" type="Node3D" unique_id=1120736027]
+script = ExtResource("1_gameplay_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1748590157]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=533899589]
+transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 20, 0)
+light_color = Color(0.99, 0.96, 0.92, 1)
+light_energy = 1.3
+shadow_enabled = true
+shadow_bias = 0.03
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=626554313]
+transform = Transform3D(0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573576, -0.707107, -0.40558, 0.579228, 10, 0, 10)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=2118205170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 35)
+projection = 1
+size = 24.0
+
+[node name="Systems" type="Node" parent="." unique_id=2079247180]
+
+[node name="GridSystem" type="Node" parent="Systems" unique_id=2063335205]
+script = ExtResource("2_grid_script")
+
+[node name="World" type="Node3D" parent="." unique_id=2125058093]
+
+[node name="TilesContainer" type="Node3D" parent="World" unique_id=611492904]
+
+[node name="ObstaclesContainer" type="Node3D" parent="World" unique_id=389206556]
+
+[node name="BuildingsContainer" type="Node3D" parent="World" unique_id=1595296668]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1866312529]
+
+[node name="HUD" type="Control" parent="UI" unique_id=150336714]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="PanelContainer" parent="UI/HUD" unique_id=895760477]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_topbar")
+
+[node name="Margin" type="MarginContainer" parent="UI/HUD/TopBar" unique_id=1347719398]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="HBox" type="HBoxContainer" parent="UI/HUD/TopBar/Margin" unique_id=466838483]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="WoodBadge" type="Label" parent="UI/HUD/TopBar/Margin/HBox" unique_id=336598412]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.65, 0.45, 1)
+theme_override_font_sizes/font_size = 15
+text = "🪵 GỖ: 20"
+
+[node name="StoneBadge" type="Label" parent="UI/HUD/TopBar/Margin/HBox" unique_id=550594948]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 15
+text = "🧱 ĐÁ: 10"
+
+[node name="Panel" type="PanelContainer" parent="UI/HUD" unique_id=873901741]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -440.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 200.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_panel")
+
+[node name="VBox" type="VBoxContainer" parent="UI/HUD/Panel" unique_id=532968132]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="UI/HUD/Panel/VBox" unique_id=765817771]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "CARDLORD - GAMEPLAY ARCHITECTURE"
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="UI/HUD/Panel/VBox" unique_id=1351074040]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.31, 1)
+theme_override_font_sizes/font_size = 13
+text = "THỜI GIAN: BAN NGÀY (QUY HOẠCH & XÂY DỰNG)"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/HUD/Panel/VBox" unique_id=591513952]
+layout_mode = 2
+
+[node name="CellInfoLabel" type="Label" parent="UI/HUD/Panel/VBox" unique_id=159318166]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Rê chuột vào ô cờ hoặc click cây/đá để khai thác"
+
+[node name="Help1" type="Label" parent="UI/HUD/Panel/VBox" unique_id=1297406155]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "• [W / A / S / D] hoặc Chuột giữa: Di chuyển camera tự do"
+
+[node name="Help2" type="Label" parent="UI/HUD/Panel/VBox" unique_id=1339268978]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "• [Q / E]: Xoay góc nhìn sa bàn 360°"
+
+[node name="Help3" type="Label" parent="UI/HUD/Panel/VBox" unique_id=1356765565]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "• [Cuộn chuột]: Phóng to / Thu nhỏ"
+
+[node name="Help4" type="Label" parent="UI/HUD/Panel/VBox" unique_id=323015646]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "• [Click Chuột Trái vào Cây]: Khai thác gỗ (Juice & Giải phóng ô đất)"
+
+[node name="Help5" type="Label" parent="UI/HUD/Panel/VBox" unique_id=1711958785]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "• [SPACE]: Chuyển đổi Ngày / Đêm"

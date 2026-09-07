@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d3m8k1v2x5u7a"]
+
+[ext_resource type="Script" uid="uid://cx4x2b64x2o8e" path="res://scripts/entities/terrain_tile.gd" id="1_tile_script"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_highlight"]
+size = Vector2(1.92, 1.92)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_highlight"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.2, 1, 0.4, 0.45)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_collider"]
+size = Vector3(2, 1, 2)
+
+[node name="TerrainTile" type="Node3D"]
+script = ExtResource("1_tile_script")
+
+[node name="ModelContainer" type="Node3D" parent="."]
+
+[node name="HighlightMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02, 0)
+visible = false
+mesh = SubResource("QuadMesh_highlight")
+surface_material_override/0 = SubResource("StandardMaterial3D_highlight")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_collider")
