@@ -21,8 +21,8 @@ var decorations_container: Node3D
 
 # Camera Settings (RTS / Isometric)
 var camera_angle: float = 45.0
-var target_zoom: float = 38.0
-var camera_pan_speed: float = 35.0
+var target_zoom: float = 28.0
+var camera_pan_speed: float = 30.0
 var is_dragging_camera: bool = false
 var last_mouse_pos: Vector2 = Vector2.ZERO
 
@@ -85,18 +85,18 @@ func _handle_camera_movement(delta: float) -> void:
 		var move_vec = (right * input_dir.x + forward * -input_dir.y) * camera_pan_speed * delta
 		camera_pivot.position += move_vec
 		
-		# Giới hạn phạm vi camera trong ranh giới sa bàn (0 đến 104m)
-		camera_pivot.position.x = clampf(camera_pivot.position.x, 10.0, 95.0)
-		camera_pivot.position.z = clampf(camera_pivot.position.z, 10.0, 95.0)
+		# Giới hạn phạm vi camera trong ranh giới sa bàn 72m
+		camera_pivot.position.x = clampf(camera_pivot.position.x, 10.0, 62.0)
+		camera_pivot.position.z = clampf(camera_pivot.position.z, 10.0, 62.0)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Zoom bằng con lăn chuột (Tầm zoom rộng 15.0 -> 80.0)
+	# Zoom bằng con lăn chuột (Tầm zoom 12.0 -> 55.0)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			target_zoom = clampf(target_zoom + 3.0, 15.0, 80.0)
+			target_zoom = clampf(target_zoom + 2.5, 12.0, 55.0)
 			camera.size = target_zoom
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			target_zoom = clampf(target_zoom - 3.0, 15.0, 80.0)
+			target_zoom = clampf(target_zoom - 2.5, 12.0, 55.0)
 			camera.size = target_zoom
 			
 		# Giữ chuột giữa kéo di chuyển camera
@@ -112,8 +112,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		right.y = 0
 		forward.y = 0
 		camera_pivot.position += (-right * diff.x + forward * diff.y) * 0.05
-		camera_pivot.position.x = clampf(camera_pivot.position.x, 10.0, 95.0)
-		camera_pivot.position.z = clampf(camera_pivot.position.z, 10.0, 95.0)
+		camera_pivot.position.x = clampf(camera_pivot.position.x, 10.0, 62.0)
+		camera_pivot.position.z = clampf(camera_pivot.position.z, 10.0, 62.0)
 		
 	# Phím Q / E: Xoay góc nhìn sa bàn 360 độ
 	if event is InputEventKey and event.pressed:

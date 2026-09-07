@@ -4,10 +4,10 @@
 [ext_resource type="Script" path="res://scripts/systems/grid_system.gd" id="2_grid_script"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
-sky_top_color = Color(0.35, 0.55, 0.85, 1)
-sky_horizon_color = Color(0.7, 0.8, 0.9, 1)
-ground_bottom_color = Color(0.2, 0.25, 0.3, 1)
-ground_horizon_color = Color(0.7, 0.8, 0.9, 1)
+sky_top_color = Color(0.28, 0.46, 0.76, 1)
+sky_horizon_color = Color(0.68, 0.78, 0.88, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.15, 1)
+ground_horizon_color = Color(0.52, 0.56, 0.60, 1)
 
 [sub_resource type="Sky" id="Sky_env"]
 sky_material = SubResource("ProceduralSkyMaterial_sky")
@@ -15,11 +15,17 @@ sky_material = SubResource("ProceduralSkyMaterial_sky")
 [sub_resource type="Environment" id="Environment_main"]
 background_mode = 2
 sky = SubResource("Sky_env")
-ambient_light_source = 3
-ambient_light_color = Color(0.85, 0.88, 0.95, 1)
-ambient_light_energy = 0.55
+ambient_light_source = 2
+ambient_light_color = Color(0.92, 0.88, 0.82, 1)
+ambient_light_energy = 0.28
 tonemap_mode = 2
+tonemap_exposure = 1.05
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 2.2
+ssao_power = 1.5
 glow_enabled = true
+glow_intensity = 0.15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
 bg_color = Color(0.12, 0.1, 0.15, 0.92)
@@ -52,24 +58,30 @@ script = ExtResource("1_gameplay_script")
 environment = SubResource("Environment_main")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=533899589]
-transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 20, 0)
-light_color = Color(0.99, 0.96, 0.92, 1)
-light_energy = 1.3
+transform = Transform3D(0.742404, -0.447214, 0.499407, 0, 0.744312, 0.667833, -0.669956, -0.4958, 0.552582, 0, 25, 0)
+light_color = Color(1, 0.96, 0.9, 1)
+light_energy = 1.45
 shadow_enabled = true
-shadow_bias = 0.03
+shadow_bias = 0.02
+shadow_blur = 1.2
+directional_shadow_split_1 = 0.15
+directional_shadow_split_2 = 0.35
+directional_shadow_blend_splits = true
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=626554313]
-transform = Transform3D(0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573576, -0.707107, -0.40558, 0.579228, 10, 0, 10)
+transform = Transform3D(0.707107, -0.40558, 0.579228, 0, 0.819152, 0.573576, -0.707107, -0.40558, 0.579228, 34, 0, 32)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=2118205170]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 35)
 projection = 1
-size = 24.0
+size = 28.0
 
 [node name="Systems" type="Node" parent="." unique_id=2079247180]
 
 [node name="GridSystem" type="Node" parent="Systems" unique_id=2063335205]
 script = ExtResource("2_grid_script")
+grid_size = Vector2i(20, 20)
+cell_size = 2.0
 
 [node name="World" type="Node3D" parent="." unique_id=2125058093]
 
