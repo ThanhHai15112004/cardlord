@@ -1,3 +1,4 @@
+@tool
 class_name TerrainTile
 extends Node3D
 
@@ -23,7 +24,11 @@ enum TileType {
 
 @export var is_buildable: bool = true
 @export var grid_coord: Vector2i = Vector2i.ZERO
-@export var custom_model_scene: PackedScene
+@export var custom_model_scene: PackedScene:
+	set(val):
+		custom_model_scene = val
+		if is_inside_tree():
+			_setup_visual()
 
 @onready var model_container: Node3D = $ModelContainer
 @onready var highlight_mesh: MeshInstance3D = $HighlightMesh

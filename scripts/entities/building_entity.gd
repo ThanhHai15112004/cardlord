@@ -1,3 +1,4 @@
+@tool
 class_name BuildingEntity
 extends Node3D
 
@@ -10,7 +11,11 @@ signal building_destroyed(building: BuildingEntity)
 
 @export var building_data: BuildingData
 @export var grid_coord: Vector2i = Vector2i.ZERO
-@export var custom_model_scene: PackedScene
+@export var custom_model_scene: PackedScene:
+	set(val):
+		custom_model_scene = val
+		if is_inside_tree():
+			_setup_model()
 
 @onready var model_container: Node3D = $ModelContainer
 @onready var area_3d: Area3D = $Area3D
@@ -24,9 +29,10 @@ func _ready() -> void:
 		current_hp = max_hp
 		
 	_setup_model()
-	play_placement_animation()
+	if not Engine.is_editor_hint():
+		play_placement_animation()
 	
-	if area_3d:
+	if area_3d and not Engine.is_editor_hint():
 		area_3d.input_event.connect(_on_input_event)
 
 func _setup_model() -> void:

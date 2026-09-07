@@ -1,7 +1,23 @@
+@tool
 extends Node3D
 
 ## Script Điều phối Gameplay Cốt lõi (Core Gameplay Controller)
-## Quản lý Camera RTS trên Sa bàn Khổng lồ, Vòng lặp Ngày/Đêm, Hệ thống Lưới và Tương tác Entity
+## Hỗ trợ thiết kế trực tiếp trên 3D Editor (@tool), Quản lý Camera RTS, Ngày/Đêm và Tương tác Entity
+
+@export_group("Bản Đồ Sa Bàn (Editor Tools)")
+## Bấm nút này trong Inspector để sinh lại toàn bộ sa bàn 3D trực tiếp ra màn hình Editor
+@export var tao_lai_ban_do_trong_editor: bool = false:
+	set(val):
+		if val and Engine.is_editor_hint():
+			tao_lai_ban_do_trong_editor = false
+			generate_map_in_editor()
+
+## Bấm nút này trong Inspector để xóa sạch các node sa bàn
+@export var xoa_sach_ban_do_trong_editor: bool = false:
+	set(val):
+		if val and Engine.is_editor_hint():
+			xoa_sach_ban_do_trong_editor = false
+			clear_map_in_editor()
 
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var camera: Camera3D = $CameraPivot/Camera3D
@@ -34,31 +50,43 @@ var wood_count: int = 30
 var stone_count: int = 15
 
 func _ready() -> void:
-	# Khởi tạo hoặc tìm kiếm an toàn các container trong World
 	tiles_container = _ensure_container("TilesContainer")
 	obstacles_container = _ensure_container("ObstaclesContainer")
 	buildings_container = _ensure_container("BuildingsContainer")
 	decorations_container = _ensure_container("DecorationsContainer")
 
-	# Lắp ráp Bản đồ Sa bàn Khổng lồ (Grand Base Diorama Map)
-	var castle_world_pos = KingdomMapBuilder.build_grand_map(
-		grid_system,
-		tiles_container,
-		obstacles_container,
-		buildings_container,
-		decorations_container
-	)
-	
-	# Định vị camera ngay trung tâm Thủ phủ Lâu đài
-	camera_pivot.position = castle_world_pos
+	if Engine.is_editor_hint():
+		# Nếu đang mở trong Godot Editor: tự động sinh sa bàn để hiển thị trực quan trong 3D Viewport
+		if tiles_container.get_child_count() == 0:
+			generate_map_in_editor()
+		return
+
+	# Runtime gameplay logic
+	if tiles_container.get_child_count() == 0:
+		var castle_world_pos = KingdomMapBuilder.build_grand_map(
+			grid_system,
+			tiles_container,
+			obstacles_container,
+			buildings_container,
+			decorations_container
+		)
+		camera_pivot.position = castle_world_pos
+	else:
+		_register_existing_nodes_to_grid()
+		var castle = buildings_container.get_node_or_null("BuildingEntity")
+		if castle:
+			camera_pivot.position = castle.position
+		else:
+			camera_pivot.position = Vector3(34.0, 0.5, 32.0)
+
 	camera.size = target_zoom
 	update_camera_transform()
-	
-	# Kết nối tín hiệu tương tác từ các Tile và ResourceNode
 	_connect_interactive_signals()
 	_update_hud_resources()
 
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
 	_handle_camera_movement(delta)
 
 func _handle_camera_movement(delta: float) -> void:
@@ -90,6 +118,8 @@ func _handle_camera_movement(delta: float) -> void:
 		camera_pivot.position.z = clampf(camera_pivot.position.z, 10.0, 62.0)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
 	# Zoom bằng con lăn chuột (Tầm zoom 12.0 -> 55.0)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
@@ -209,3 +239,63 @@ func _ensure_container(container_name: String) -> Node3D:
 		container.name = container_name
 		world_node.add_child(container)
 	return container
+
+## Sinh bản đồ trực tiếp trong 3D Viewport của Editor để người dùng nhìn thấy và tùy biến
+func generate_map_in_editor() -> void:
+	tiles_container = _ensure_container("TilesContainer")
+	obstacles_container = _ensure_container("ObstaclesContainer")
+	buildings_container = _ensure_container("BuildingsContainer")
+	decorations_container = _ensure_container("DecorationsContainer")
+	
+	clear_map_in_editor()
+	
+	var castle_pos = KingdomMapBuilder.build_grand_map(
+		grid_system,
+		tiles_container,
+		obstacles_container,
+		buildings_container,
+		decorations_container
+	)
+	
+	# Gán owner cho toàn bộ các node mới sinh để xuất hiện trong Scene Tree dock và 3D Viewport của Editor
+	_set_owner_recursive(world_node, self)
+	
+	if camera_pivot:
+		camera_pivot.position = castle_pos
+	if camera:
+		camera.size = target_zoom
+	update_camera_transform()
+	print("[CardLord] Đã khởi tạo thành công Sa Bàn 3D trực tiếp trên màn hình Editor!")
+
+## Xóa sạch các node sa bàn trong Editor
+func clear_map_in_editor() -> void:
+	tiles_container = _ensure_container("TilesContainer")
+	obstacles_container = _ensure_container("ObstaclesContainer")
+	buildings_container = _ensure_container("BuildingsContainer")
+	decorations_container = _ensure_container("DecorationsContainer")
+	
+	for cnt in [tiles_container, obstacles_container, buildings_container, decorations_container]:
+		for c in cnt.get_children():
+			cnt.remove_child(c)
+			c.queue_free()
+
+## Đệ quy gán owner để các node con xuất hiện trong Editor
+func _set_owner_recursive(node: Node, scene_root: Node) -> void:
+	if node != scene_root and node.owner == null:
+		node.owner = scene_root
+	for child in node.get_children():
+		_set_owner_recursive(child, scene_root)
+
+## Đăng ký các node đã được đặt sẵn trong Editor vào GridSystem khi bắt đầu chơi
+func _register_existing_nodes_to_grid() -> void:
+	grid_system.initialize_grid()
+	for child in tiles_container.get_children():
+		if child is TerrainTile:
+			grid_system.register_tile(child.grid_coord, child, child.is_buildable)
+	for child in obstacles_container.get_children():
+		if child is ResourceNode:
+			grid_system.register_obstacle(child.grid_coord, child)
+	for child in buildings_container.get_children():
+		if child is BuildingEntity:
+			grid_system.register_building(child.grid_coord, child)
+

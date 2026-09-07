@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CardLord"
-run/main_scene="res://scenes/gameplay/gameplay.tscn"
+run/main_scene="uid://b5m7v3k8x1p2q"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
