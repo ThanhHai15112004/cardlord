@@ -7,10 +7,11 @@ extends Node3D
 @onready var camera: Camera3D = $CameraPivot/Camera3D
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var grid_system: GridSystem = $Systems/GridSystem
-@onready var tiles_container: Node3D = $World/TilesContainer
-@onready var obstacles_container: Node3D = $World/ObstaclesContainer
-@onready var buildings_container: Node3D = $World/BuildingsContainer
-@onready var decorations_container: Node3D = $World/DecorationsContainer
+@onready var world_node: Node3D = $World
+var tiles_container: Node3D
+var obstacles_container: Node3D
+var buildings_container: Node3D
+var decorations_container: Node3D
 
 # UI Nodes
 @onready var cell_info_label: Label = $UI/HUD/Panel/VBox/CellInfoLabel
@@ -33,6 +34,12 @@ var wood_count: int = 30
 var stone_count: int = 15
 
 func _ready() -> void:
+	# Khởi tạo hoặc tìm kiếm an toàn các container trong World
+	tiles_container = _ensure_container("TilesContainer")
+	obstacles_container = _ensure_container("ObstaclesContainer")
+	buildings_container = _ensure_container("BuildingsContainer")
+	decorations_container = _ensure_container("DecorationsContainer")
+
 	# Lắp ráp Bản đồ Sa bàn Khổng lồ (Grand Base Diorama Map)
 	var castle_world_pos = KingdomMapBuilder.build_grand_map(
 		grid_system,
@@ -187,3 +194,18 @@ func _update_hud_resources() -> void:
 		wood_badge.text = "🪵 GỖ: %d" % wood_count
 	if stone_badge:
 		stone_badge.text = "🧱 ĐÁ: %d" % stone_count
+
+## Đảm bảo container tồn tại an toàn, tránh lỗi null node
+func _ensure_container(container_name: String) -> Node3D:
+	if not world_node:
+		world_node = get_node_or_null("World")
+		if not world_node:
+			world_node = Node3D.new()
+			world_node.name = "World"
+			add_child(world_node)
+	var container = world_node.get_node_or_null(container_name)
+	if not container:
+		container = Node3D.new()
+		container.name = container_name
+		world_node.add_child(container)
+	return container

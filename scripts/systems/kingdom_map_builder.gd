@@ -43,6 +43,13 @@ static func build_grand_map(
 	buildings_container: Node3D,
 	decorations_container: Node3D
 ) -> Vector3:
+	# Phòng thủ nếu bất kỳ container nào bị null
+	if not decorations_container:
+		decorations_container = Node3D.new()
+		decorations_container.name = "DecorationsContainer"
+		if tiles_container and tiles_container.get_parent():
+			tiles_container.get_parent().add_child(decorations_container)
+
 	# Cấu hình grid system
 	grid_system.grid_size = GRID_SIZE
 	grid_system.cell_size = CELL_SIZE

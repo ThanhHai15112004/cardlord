@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d3m8k1v2x5u7a"]
 
-[ext_resource type="Script" uid="uid://cx4x2b64x2o8e" path="res://scripts/entities/terrain_tile.gd" id="1_tile_script"]
+[ext_resource type="Script" path="res://scripts/entities/terrain_tile.gd" id="1_tile_script"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_highlight"]
 size = Vector2(1.92, 1.92)

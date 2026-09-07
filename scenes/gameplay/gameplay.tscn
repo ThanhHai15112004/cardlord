@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b5m7v3k8x1p2q"]
 
-[ext_resource type="Script" uid="uid://bfsr8c53fro50" path="res://scenes/gameplay/gameplay.gd" id="1_gameplay_script"]
-[ext_resource type="Script" uid="uid://dc46r1fddftdf" path="res://scripts/systems/grid_system.gd" id="2_grid_script"]
+[ext_resource type="Script" path="res://scenes/gameplay/gameplay.gd" id="1_gameplay_script"]
+[ext_resource type="Script" path="res://scripts/systems/grid_system.gd" id="2_grid_script"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.35, 0.55, 0.85, 1)
