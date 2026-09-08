@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c7nav4k2x8p1a"]
+
+[ext_resource type="Script" path="res://tests/test_phase_01.gd" id="1_script"]
+
+[node name="TestPhase01" type="Node"]
+script = ExtResource("1_script")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultLabel" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+text = "Đang chạy kiểm thử tự động Phase 01..."
+autowrap_mode = 2

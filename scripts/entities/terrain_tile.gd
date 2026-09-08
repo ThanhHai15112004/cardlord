@@ -52,6 +52,8 @@ func _update_buildable_state() -> void:
 			is_buildable = false
 		TileType.ROCK:
 			is_buildable = false
+		TileType.ROAD:
+			is_buildable = false
 		_:
 			is_buildable = true
 

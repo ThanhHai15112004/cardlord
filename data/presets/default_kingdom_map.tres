@@ -1,33 +1,6 @@
-[gd_resource type="Resource" script_class="MapGenConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MapGenConfig" format=3 uid="uid://c2vvi6ipkux01"]
 
-[ext_resource type="Script" path="res://scripts/data/map_gen_config.gd" id="1_config"]
+[ext_resource type="Script" uid="uid://cnp0rwb0kl3mb" path="res://scripts/data/map_gen_config.gd" id="1_config"]
 
 [resource]
 script = ExtResource("1_config")
-seed = 124856
-map_size = Vector2i(36, 36)
-cell_size = 2.0
-noise_scale = 0.035
-noise_octaves = 4
-terrain_levels = 7
-terrace_strength = 0.85
-playable_grid_size = Vector2i(20, 20)
-playable_origin = Vector2i(8, 7)
-playable_core_radius = 7.0
-playable_falloff_radius = 11.0
-flatness_strength = 0.92
-base_elevation = 2
-border_width = 6.0
-edge_mountain_strength = 0.6
-river_enabled = true
-river_width = 2.2
-river_depth = 1.0
-river_bank_width = 1.2
-river_start_x = 5.0
-river_bridge_x = 5.0
-forest_density = 0.4
-cluster_scale = 0.08
-min_tree_distance = 1.5
-min_rock_distance = 2.0
-slope_cost_penalty = 4.0
-forest_cost_penalty = 3.0

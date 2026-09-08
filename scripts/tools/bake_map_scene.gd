@@ -11,10 +11,15 @@ func _init() -> void:
 
 	var root = scene.instantiate()
 	var grid_sys = root.get_node("Systems/GridSystem")
+	var world_node = root.get_node("World")
 	var tiles_cnt = root.get_node("World/TilesContainer")
 	var obs_cnt = root.get_node("World/ObstaclesContainer")
 	var bld_cnt = root.get_node("World/BuildingsContainer")
-	var deco_cnt = root.get_node("World/DecorationsContainer")
+	var deco_cnt = root.get_node_or_null("World/DecorationsContainer")
+	if not deco_cnt:
+		deco_cnt = Node3D.new()
+		deco_cnt.name = "DecorationsContainer"
+		world_node.add_child(deco_cnt)
 
 	# Dọn dẹp các node con cũ nếu có
 	for cnt in [tiles_cnt, obs_cnt, bld_cnt, deco_cnt]:

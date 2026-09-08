@@ -5,6 +5,12 @@ extends Node3D
 ## Hỗ trợ thiết kế trực tiếp trên 3D Editor (@tool), Quản lý Camera RTS, Ngày/Đêm và Tương tác Entity
 
 @export_group("Bản Đồ Sa Bàn (Editor Tools)")
+@export_tool_button("▶ SINH SA BÀN 3D TRONG EDITOR")
+var btn_gen = generate_map_in_editor
+
+@export_tool_button("🗑 XÓA SẠCH SA BÀN")
+var btn_clear = clear_map_in_editor
+
 ## Bấm nút này trong Inspector để sinh lại toàn bộ sa bàn 3D trực tiếp ra màn hình Editor
 @export var tao_lai_ban_do_trong_editor: bool = false:
 	set(val):

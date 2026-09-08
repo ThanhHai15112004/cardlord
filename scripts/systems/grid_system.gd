@@ -1,3 +1,4 @@
+@tool
 class_name GridSystem
 extends Node
 
@@ -34,7 +35,9 @@ func initialize_grid() -> void:
 				"tile": null,
 				"obstacle": null,
 				"building": null,
-				"is_buildable": true
+				"is_buildable": true,
+				"elevation": 2,
+				"slope": 0.0
 			}
 
 ## Chuyển đổi tọa độ thế giới 3D sang tọa độ lưới 2D (Vector2i)
@@ -61,8 +64,61 @@ func is_cell_free_for_building(grid_pos: Vector2i) -> bool:
 	var cell = _grid_data.get(grid_pos, null)
 	if cell == null:
 		return false
-	# Không thể xây nếu ô bị cấm xây (như sông nước), có vật cản chưa khai thác hoặc đã có nhà
-	return cell["is_buildable"] and cell["obstacle"] == null and cell["building"] == null
+	# Không thể xây nếu ô bị cấm xây (sông nước/đường mòn), có vật cản, đã có nhà,
+	# hoặc nằm ngoài tầng đồng bằng Level 2 hay có độ dốc chênh lệch
+	return (
+		cell["is_buildable"]
+		and cell["obstacle"] == null
+		and cell["building"] == null
+		and cell.get("elevation", 2) == 2
+		and is_zero_approx(cell.get("slope", 0.0))
+	)
+
+## Lấy tầng cao độ của một ô (0..6)
+func get_cell_elevation(grid_pos: Vector2i) -> int:
+	var cell = _grid_data.get(grid_pos, null)
+	if cell:
+		return cell.get("elevation", 2)
+	return 2
+
+## Lấy độ dốc cục bộ của một ô
+func get_cell_slope(grid_pos: Vector2i) -> float:
+	var cell = _grid_data.get(grid_pos, null)
+	if cell:
+		return cell.get("slope", 0.0)
+	return 0.0
+
+## Đồng bộ toàn bộ dữ liệu địa hình (Elevation, Slope, Buildable) từ MapGenContext vào GridSystem
+func sync_from_map_context(context: MapGenContext, config: MapGenConfig) -> void:
+	if context == null or config == null:
+		return
+		
+	grid_size = config.playable_grid_size
+	cell_size = config.cell_size
+	grid_origin = Vector3(float(config.playable_origin.x) * cell_size, 0.0, float(config.playable_origin.y) * cell_size)
+	initialize_grid()
+	
+	var p_orig: Vector2i = config.playable_origin
+	var p_size: Vector2i = config.playable_grid_size
+	
+	for py in range(p_size.y):
+		for px in range(p_size.x):
+			var local_coord = Vector2i(px, py)
+			var world_x = p_orig.x + px
+			var world_y = p_orig.y + py
+			var world_idx = context.get_index(world_x, world_y)
+			
+			var lvl: int = context.elevation_levels[world_idx]
+			var slope: float = context.slope_map[world_idx]
+			var is_water: bool = (context.water_zones[world_idx] == MapGenConstants.WaterZone.WATER)
+			var is_road: bool = context.road_nodes.has(Vector2i(world_x, world_y))
+			
+			var can_build: bool = (lvl == config.base_elevation and is_zero_approx(slope) and not is_water and not is_road)
+			
+			if _grid_data.has(local_coord):
+				_grid_data[local_coord]["elevation"] = lvl
+				_grid_data[local_coord]["slope"] = slope
+				_grid_data[local_coord]["is_buildable"] = can_build
 
 ## Đăng ký một TerrainTile vào hệ thống
 func register_tile(grid_pos: Vector2i, tile: Node, is_buildable: bool = true) -> void:

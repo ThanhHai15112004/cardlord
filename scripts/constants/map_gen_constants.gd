@@ -80,12 +80,23 @@ enum CliffFace {
 # 4. Mạng Lưới Đường & Bitmask Tự Động Nối (Road Auto-Tiling Bitmask)
 # ------------------------------------------------------------------------------
 
+## Bitmask 4 hướng theo quy tắc lũy thừa 2
 enum RoadBitmask {
 	NONE = 0,
 	NORTH = 1 << 0, # 1
 	EAST = 1 << 1,  # 2
 	SOUTH = 1 << 2, # 4
 	WEST = 1 << 3   # 8
+}
+
+## Phân loại hình thái nút giao đường để ghép model 3D (Road Node Model Type)
+enum RoadNodeType {
+	NONE = 0,
+	DEAD_END = 1,   ## Đường cụt (1 hướng nối)
+	STRAIGHT = 2,   ## Đường thẳng (2 hướng đối diện)
+	CORNER = 3,     ## Khúc cua vuông góc (2 hướng kề nhau)
+	TEE = 4,        ## Ngã ba (3 hướng nối)
+	CROSS = 5       ## Ngã tư (4 hướng nối)
 }
 
 # ------------------------------------------------------------------------------
@@ -98,5 +109,21 @@ enum POIType {
 	BRIDGE = 2,     ## Cầu gỗ có mái che vượt sông
 	QUARRY = 3,     ## Mỏ đá tự nhiên
 	LUMBER = 4,     ## Rừng khai thác gỗ trù phú
-	SCOUT_CAMP = 5  ## Tiền đồn / Do thám quái vật bìa rừng
+	SCOUT = 5       ## Điểm do thám quái vật bìa rừng
 }
+
+# ------------------------------------------------------------------------------
+# 6. Thảm Thực Vật & Mật Độ Rừng (Foliage & Forest Density Tiers)
+# ------------------------------------------------------------------------------
+
+## Ngưỡng phân chia mật độ rừng tự nhiên theo Cluster Noise
+const FOREST_DENSE_THRESHOLD: float = 0.65   ## Rừng rậm: Cụm rừng nguyên sinh
+const FOREST_SPARSE_THRESHOLD: float = 0.40  ## Rừng thưa: Cây đơn lẻ / Bụi rậm
+
+# ------------------------------------------------------------------------------
+# 7. Khối Chân Đế Sa Bàn Nổi (Solid Diorama Bedrock Pedestal)
+# ------------------------------------------------------------------------------
+
+const BEDROCK_DEPTH: float = 5.0
+const BEDROCK_ROUGHNESS: float = 0.95
+const BEDROCK_COLOR: Color = Color(0.20, 0.17, 0.15)
